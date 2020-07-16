@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    </style>
+</head>
+
+<body>
+
+    <input id="u" placeholder="username" autocomplete="off" />
+
+    <button id="nextQuestion">next question</button>
+    <!-- <button></button> -->
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+
+    var panel = document.getElementById("panel")
+    var nextQuestion = document.getElementById("nextQuestion")
+
+    var question = {
+            type: "multipleChoice",
+            answers:{
+                0:"banana",
+                1:"apple",
+                2:"pear",
+                3:"orange"
+            },
+            correctAnswer:0,
+            userAnswers:{
+
+            }
+        }
+
+    $(function() {
+        var socket = io();
+
+        socket.on('all users answered', function(msg){
+            alert("users have all answered")
+        })
+
+        socket.on('next question', function(msg){
+            console.log(msg);
+        })
+
+        nextQuestion.addEventListener('click',function(e) {
+            console.log("nextQuestion")
+            socket.emit('next question', "zintis");
+        })
+
+    });
+
+
+
+    </script>
+</body>
+
+</html>

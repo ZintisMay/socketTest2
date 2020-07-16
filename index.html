@@ -85,6 +85,10 @@
           return false;
         });
 
+        // socket.on('hi', function(msg){
+        //   alert('hi')
+        // });
+
         socket.on('chat message', function(msg){
           $('#messages').append($('<li>').text(`${msg.user}: ${msg.text}`));
         });

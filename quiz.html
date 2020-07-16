@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    </style>
+</head>
+
+<body>
+
+    <input id="u" placeholder="username" autocomplete="off" />
+
+    <div id="quiz"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+
+    var quiz = document.getElementById("quiz")
+
+    $(function() {
+        var socket = io();
+
+
+        socket.on('answer question', function(msg) {
+            $('#messages').append($('<li>').text(`${msg.user}: ${msg.text}`));
+        });
+
+        socket.on('next question', function(msg){
+            console.log(msg)
+            displayQuiz(msg)
+        })
+
+    });
+
+    document.addEventListener('click',function(e) {
+        if (e.target.classList.contains('answerButton')) {
+            var msg = {
+                user: $('#u').val(),
+                answer: e.target.dataset.answer
+            }
+            socket.emit('answer question', msg);
+        }
+    })
+
+    function displayQuiz(question) {
+        quiz.innerHTML = ""
+        var answers = question.answers
+        for(var k in answers){
+            quiz.innerHTML += `<p data-answer="${k}">${answers[k]}</p>`
+        }
+    }
+    </script>
+</body>
+
+</html>
